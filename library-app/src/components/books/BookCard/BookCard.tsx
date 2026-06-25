@@ -1,5 +1,5 @@
 import React from 'react';
-import type { IBook } from '../../../types/book.types'; 
+import type { IBook } from '../../../types/book.types';
 
 interface BookCardProps {
   book: IBook;
@@ -12,11 +12,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
         <div className="book-cover-placeholder">
           <span className="book-cover-emoji">📖</span>
         </div>
-        <span
-          className={`book-status-badge badge ${
-            book.isAvailable ? 'badge-available' : 'badge-unavailable'
-          }`}
-        >
+        <span className={`book-status-badge badge ${book.isAvailable ? 'badge-available' : 'badge-unavailable'}`}>
           {book.isAvailable ? 'Доступна' : 'Выдана'}
         </span>
       </div>

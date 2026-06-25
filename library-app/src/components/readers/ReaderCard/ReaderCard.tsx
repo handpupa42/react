@@ -1,11 +1,12 @@
 import React from 'react';
-import type { IReader } from '../../../types/reader.types'; 
+import type { IReader } from '../../../types/reader.types';
 
 interface ReaderCardProps {
   reader: IReader;
+  onSelect: (id: string) => void;
 }
 
-const ReaderCard: React.FC<ReaderCardProps> = ({ reader }) => {
+const ReaderCard: React.FC<ReaderCardProps> = ({ reader, onSelect }) => {
   return (
     <div className="reader-card">
       <div className="reader-avatar">
@@ -19,9 +20,9 @@ const ReaderCard: React.FC<ReaderCardProps> = ({ reader }) => {
             📚 Активных книг: <strong>{reader.activeBooks.length}</strong>
           </span>
         </div>
-        <a href={`reader-profile.html?id=${reader.id}`} className="btn btn-primary">
+        <button onClick={() => onSelect(reader.id)} className="btn btn-primary">
           Профиль
-        </a>
+        </button>
       </div>
     </div>
   );

@@ -1,22 +1,25 @@
 import React from 'react';
-import type { IBook } from '../../../types/book.types';
 import type { IReader } from '../../../types/reader.types';
+import type { IBook } from '../../../types/book.types';
 
 interface ReaderProfileProps {
   reader: IReader;
-  allBooks: IBook[]; // Передаем все книги, чтобы сопоставить ID книг с их названиями
+  allBooks: IBook[];
+  onBack: () => void;
 }
 
-const ReaderProfile: React.FC<ReaderProfileProps> = ({ reader, allBooks }) => {
-  
-  // Функция для поиска названия книги по её ID
+const ReaderProfile: React.FC<ReaderProfileProps> = ({ reader, allBooks, onBack }) => {
   const getBookDetails = (bookId: string) => {
     return allBooks.find((b) => b.id === bookId);
   };
 
   return (
     <div className="profile-wrapper">
-      {/* Profile Header */}
+      <button onClick={onBack} className="btn btn-secondary" style={{ marginBottom: '20px' }}>
+        ← Назад к списку читателей
+      </button>
+
+      {/* Header */}
       <div className="profile-header">
         <div className="profile-avatar">
           <span className="profile-avatar-emoji">👤</span>
@@ -29,13 +32,13 @@ const ReaderProfile: React.FC<ReaderProfileProps> = ({ reader, allBooks }) => {
             <span>📅 Регистрация: {reader.registrationDate.toLocaleDateString()}</span>
           </div>
           <div className="profile-stats">
-            <span>📚 Всего в истории: <strong>{reader.booksHistory.length}</strong></span>
-            <span>📖 Активных книг: <strong>{reader.activeBooks.length}</strong></span>
+            <span>📚 Всего книг в истории: <strong>{reader.booksHistory.length}</strong></span>
+            <span>📖 Активных на руках: <strong>{reader.activeBooks.length}</strong></span>
           </div>
         </div>
       </div>
 
-      {/* Active Books Section */}
+      {/* Active Books */}
       <section className="profile-section">
         <h2 className="profile-section-title">📖 Активные книги</h2>
         <div className="active-books-list">
@@ -50,18 +53,17 @@ const ReaderProfile: React.FC<ReaderProfileProps> = ({ reader, allBooks }) => {
               );
             })
           ) : (
-            <p className="no-books-msg">Нет активных книг</p>
+            <p className="no-books-msg">Нет активных книг на руках.</p>
           )}
         </div>
       </section>
 
-      {/* History Section */}
       <section className="profile-section">
         <h2 className="profile-section-title">📚 История чтения</h2>
         <div className="history-list">
           {reader.booksHistory.map((item, index) => {
             const book = getBookDetails(item.bookId);
-            const isCurrentlyActive = !item.returnedAt; // Если даты возврата нет, книга еще у читателя
+            const isCurrentlyActive = !item.returnedAt;
 
             return (
               <div key={index} className="history-item">
