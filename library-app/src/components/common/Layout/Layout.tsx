@@ -1,23 +1,20 @@
 import React from 'react';
 import type { ReactNode } from 'react';
+import { Outlet } from 'react-router-dom';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 
+type Page = 'books' | 'readers' | 'profile';
+
 interface LayoutProps {
-  children: ReactNode;
-  currentPage: 'books' | 'readers' | 'profile';
-  onPageChange: (page: 'books' | 'readers' | 'profile') => void;
+  currentPage: Page;
+  onPageChange: (page: Page) => void;
   booksCount: number;
   readersCount: number;
+  children?: ReactNode; // на будущее, не обязателен если используешь Outlet
 }
 
-const Layout: React.FC<LayoutProps> = ({
-  children,
-  currentPage,
-  onPageChange,
-  booksCount,
-  readersCount,
-}) => {
+const Layout: React.FC<LayoutProps> = ({ currentPage, onPageChange, booksCount, readersCount }) => {
   return (
     <div className="page-wrapper">
       <Header
@@ -27,7 +24,9 @@ const Layout: React.FC<LayoutProps> = ({
         readersCount={readersCount}
       />
       <main className="main-content">
-        {children}
+        <div className="container">
+          <Outlet /> {/* дочерние страницы через маршрутизацию */}
+        </div>
       </main>
       <Footer />
     </div>
